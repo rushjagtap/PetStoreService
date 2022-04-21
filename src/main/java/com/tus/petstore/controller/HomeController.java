@@ -43,7 +43,7 @@ public class HomeController {
 	@RequestMapping(value = "/home" ,method = RequestMethod.GET)
 	public String welcome()
 	{
-		return "Welcome to Pet Clinic Application";
+		return "Welcome to Pet Store Application";
 	}
 	
 	@RequestMapping(value = "/pets/{id}", method = RequestMethod.GET)
