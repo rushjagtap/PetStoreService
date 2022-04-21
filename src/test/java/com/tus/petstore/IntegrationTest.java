@@ -31,17 +31,19 @@ public class IntegrationTest {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+	
+	String host = "http://localhost:";
 
 	@Test
 	public void greetingShouldReturnDefaultMessage() throws Exception {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",
+		assertThat(this.restTemplate.getForObject(host + port + "/",
 				String.class)).contains("Hello, World");
 	}
 	
 	@Test
     public void testAddPetSuccess() throws URISyntaxException 
     {
-        final String baseUrl = "http://localhost:"+port+"/pets";
+        final String baseUrl = host+port+"/pets";
         URI uri = new URI(baseUrl);
         Pet pet = new Pet();
         pet.setName("Tom");
@@ -62,7 +64,7 @@ public class IntegrationTest {
 	@Test
     public void testAddOwnerSuccess() throws URISyntaxException 
     {
-        final String baseUrl = "http://localhost:"+port+"/owners";
+        final String baseUrl = host+port+"/owners";
         URI uri = new URI(baseUrl);
         Owner owner = new Owner();
         owner.setName("Sam");
@@ -86,7 +88,7 @@ public class IntegrationTest {
 	@Test
     public void testAddPetMissingParamerets() throws URISyntaxException 
     {
-		final String baseUrl = "http://localhost:"+port+"/pets";
+		final String baseUrl = host+port+"/pets";
         URI uri = new URI(baseUrl);
         Pet pet = new Pet();
      

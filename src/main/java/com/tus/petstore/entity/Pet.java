@@ -41,12 +41,7 @@ public class Pet implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "petId")
 	private  Set<Visit> visits;
-	/**
-	 * @return the petId
-	 */
-	public int getPetId() {
-		return petId;
-	}
+	
 
 	/**
 	 * @param petId the petId to set

@@ -20,14 +20,7 @@ public class PetService {
 	
 	@Autowired
 	 OwnerRepository ownerRepository;
-	
-
-//	public PetService(PetRepository PetRepo)
-//	{
-//		this.petRepository = PetRepo;
-//		
-//	}
-//	
+		
 	public List<Pet> getAllPet()
 	{
 		return petRepository.findAll();
@@ -50,9 +43,8 @@ public class PetService {
 	
 	public Pet deletePet(int id)
 	{
-		System.out.println("test");
+		
 		Optional<Pet> optionalPet = petRepository.findById(id);
-		System.out.println(optionalPet);
 		Pet existingPet = optionalPet.get();
 		petRepository.deleteById(id);
 		return existingPet;
@@ -95,9 +87,7 @@ public class PetService {
 	
 	public Owner deleteOwner(int id)
 	{
-		System.out.println("test");
 		Optional<Owner> optionalOwner = ownerRepository.findById(id);
-		System.out.println(optionalOwner);
 		Owner existingOwner = optionalOwner.get();
 		ownerRepository.deleteById(id);
 		return existingOwner;

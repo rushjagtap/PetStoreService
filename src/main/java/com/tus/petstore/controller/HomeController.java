@@ -75,7 +75,6 @@ public class HomeController {
 	public ResponseEntity<Pet> updatePet(@Valid @PathVariable int id, @RequestBody Pet pet)
 	{
 		Pet updatedPet = petService.updatePet(id, pet);
-		//URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(updatedPet.getId()).toUri();
 		new ResponseEntity<Pet>(updatedPet,HttpStatus.OK);
 		return ResponseEntity.ok(updatedPet);
 	}
@@ -84,7 +83,7 @@ public class HomeController {
 	public ResponseEntity<Pet> updatePet(@Valid @PathVariable int id)
 	{
 		Pet deletedPet = petService.deletePet(id);
-		return new ResponseEntity<Pet>(deletedPet,HttpStatus.OK);
+		return new ResponseEntity<>(deletedPet,HttpStatus.OK);
 	}
 	
 	
@@ -115,7 +114,6 @@ public class HomeController {
 	public ResponseEntity<Owner> updateOwner(@PathVariable int id, @RequestBody Owner owner)
 	{
 		Owner updatedOwner = petService.updateOwner(id, owner);
-		//URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(updatedOwner.getId()).toUri();
 		new ResponseEntity<Owner>(updatedOwner,HttpStatus.OK);
 		return ResponseEntity.ok(updatedOwner);
 	}
@@ -124,7 +122,7 @@ public class HomeController {
 	public ResponseEntity<Owner> updateOwner(@PathVariable int id)
 	{
 		Owner deletedOwner = petService.deleteOwner(id);
-		return new ResponseEntity<Owner>(deletedOwner,HttpStatus.OK);
+		return new ResponseEntity<>(deletedOwner,HttpStatus.OK);
 	}
 
 }
