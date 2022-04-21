@@ -45,23 +45,32 @@ public class PetService {
 	{
 		
 		Optional<Pet> optionalPet = petRepository.findById(id);
-		Pet existingPet = optionalPet.get();
-		petRepository.deleteById(id);
-		return existingPet;
+		if(optionalPet.isPresent())
+		{
+			Pet existingPet = optionalPet.get();
+			petRepository.deleteById(id);
+			return existingPet;
+		}
+		else
+			return null;
 	}
 	
 	public Pet updatePet(int id, Pet pet)
 	{
 		
 		Optional<Pet> optionalPet = petRepository.findById(id);
+		if(optionalPet.isPresent())
+		{
+			Pet existingPet = optionalPet.get();
+			existingPet.setBirthdate(pet.getBirthdate());
+			existingPet.setName(pet.getName());
+			existingPet.setType(pet.getType());
+			existingPet.setVisits(pet.getVisits());
 		
-		Pet existingPet = optionalPet.get();
-		existingPet.setBirthdate(pet.getBirthdate());
-		existingPet.setName(pet.getName());
-		existingPet.setType(pet.getType());
-		existingPet.setVisits(pet.getVisits());
-		
-		return petRepository.save(existingPet);
+			return petRepository.save(existingPet);
+		}
+		else
+			return null;
 	}
 
 	public List<Owner> getAllOwners()
@@ -87,10 +96,18 @@ public class PetService {
 	
 	public Owner deleteOwner(int id)
 	{
+		Owner existingOwner=null;
 		Optional<Owner> optionalOwner = ownerRepository.findById(id);
-		Owner existingOwner = optionalOwner.get();
-		ownerRepository.deleteById(id);
+		
+		if (optionalOwner.isPresent())
+		{
+			 existingOwner = optionalOwner.get();
+			ownerRepository.deleteById(id);
+			
+		}
+		
 		return existingOwner;
+		
 	}
 	
 	public Owner updateOwner(int id, Owner owner)
@@ -98,15 +115,21 @@ public class PetService {
 		
 		Optional<Owner> optionalOwner = ownerRepository.findById(id);
 		
-		Owner existingOwner = optionalOwner.get();
-		existingOwner.setAddress(owner.getAddress());
-		existingOwner.setCity(owner.getCity());
-		existingOwner.setContactNumber(owner.getContactNumber());
-		existingOwner.setName(owner.getName());
-		existingOwner.setOwnerId(owner.getOwnerId());
-		existingOwner.setPets(owner.getPets());
+		if(optionalOwner.isPresent())
+		{
+			Owner existingOwner = optionalOwner.get();
+			existingOwner.setAddress(owner.getAddress());
+			existingOwner.setCity(owner.getCity());
+			existingOwner.setContactNumber(owner.getContactNumber());
+			existingOwner.setName(owner.getName());
+			existingOwner.setOwnerId(owner.getOwnerId());
+			existingOwner.setPets(owner.getPets());
+			return ownerRepository.save(existingOwner);
+		}
+		else
+			return null;
 		
-		return ownerRepository.save(existingOwner);
+		
 	}
 	
 

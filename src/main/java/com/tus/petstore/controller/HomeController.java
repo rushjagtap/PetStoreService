@@ -50,9 +50,14 @@ public class HomeController {
 	public Pet	 getPet(@Valid @PathVariable int id)
 	{
 		
-		Pet pet;
+		Pet pet=null;
 		try {
-			pet = petService.getPet(id).get();
+				Optional<Pet> temp =  petService.getPet(id);
+			if(temp.isPresent())
+			{
+				pet = temp.get();
+				
+			}
 
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found");
