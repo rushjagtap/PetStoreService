@@ -1,0 +1,30 @@
+---
+- hosts: all
+  tasks:
+    - name: copy file to remote host
+      copy:
+        src: /opt/docker/target/petstoreservice-0.0.1-SNAPSHOT.jar
+        dest: /opt/docker
+
+    - name: copy file to remote host
+      copy:
+        src: /opt/docker/Dockerfile
+        dest: /opt/docker
+
+    - name: stop comtainer
+      command: docker stop PetClinicAppContainer
+      ignore_errors: yes
+
+    - name: remove comtainer
+      command: docker rm PetClinicAppContainer
+      ignore_errors: yes
+
+    - name: build comtainer
+      command: docker build -t pet-clinic-image .
+      args:
+       chdir: /opt/docker
+
+    - name: run comtainer
+      command: docker run -d --name PetClinicAppContainer -p 8080:8080 pet-clinic-image
+      args:
+       chdir: /opt/docker
