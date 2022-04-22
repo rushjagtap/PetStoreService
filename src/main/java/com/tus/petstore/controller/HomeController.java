@@ -21,6 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tus.petstore.entity.Pet;
+import com.tus.petstore.exception.OwnerNotFoundException;
+import com.tus.petstore.exception.PetNotFoundException;
 import com.tus.petstore.entity.Owner;
 
 @RestController
@@ -46,23 +48,22 @@ public class HomeController {
 		return "Welcome to Pet Store Application";
 	}
 	
-	@RequestMapping(value = "/pets/{id}", method = RequestMethod.GET)
-	public Pet	 getPet(@Valid @PathVariable int id)
+
+	@RequestMapping(value = "/pets/{name}", method = RequestMethod.GET)
+	public List<Pet> getPet(@Valid @PathVariable String name)
 	{
 		
-		Pet pet=null;
-		try {
-				Optional<Pet> temp =  petService.getPet(id);
-			if(temp.isPresent())
-			{
-				pet = temp.get();
-				
-			}
-
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found");
+		List<Pet> pet = petService.getPet(name);
+		if (!pet.isEmpty())
+		{
+			return pet;
 		}
-		return pet;
+		else
+		{
+		 
+			throw new PetNotFoundException("Pet not found");
+		}
+		
 	}
 	
 	
@@ -79,9 +80,20 @@ public class HomeController {
 	@RequestMapping(value ="/pets/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Pet> updatePet(@Valid @PathVariable int id, @RequestBody Pet pet)
 	{
-		Pet updatedPet = petService.updatePet(id, pet);
-		new ResponseEntity<Pet>(updatedPet,HttpStatus.OK);
-		return ResponseEntity.ok(updatedPet);
+		Optional<Pet> oPet = petService.getPet(id);
+		if (oPet.isPresent())
+		{
+			
+			Pet updatedPet = petService.updatePet(id, pet);
+			new ResponseEntity<Pet>(updatedPet,HttpStatus.OK);
+			return ResponseEntity.ok(updatedPet);
+		}
+		else
+		{
+		 
+			throw new PetNotFoundException("Pet not found");
+		}
+		
 	}
 	
 	@RequestMapping(value ="/pets/{id}", method = RequestMethod.DELETE)
@@ -98,10 +110,20 @@ public class HomeController {
 		return petService.getAllOwners();
 	}
 	
-	@RequestMapping(value = "/owners/{id}", method = RequestMethod.GET)
-	public Optional<Owner> getowner(@Valid @PathVariable int id)
+	@RequestMapping(value = "/owners/{name}", method = RequestMethod.GET)
+	public List<Owner> getowner(@Valid @PathVariable String name)
 	{
-		return petService.getOwner(id);
+		List<Owner> owner = petService.getOwner(name);
+		if (!owner.isEmpty())
+		{
+			return owner;
+		}
+		else
+		{
+		 
+			throw new OwnerNotFoundException("Owner not found");
+		}
+	
 	}
 	
 	
@@ -118,9 +140,21 @@ public class HomeController {
 	@RequestMapping(value ="/owners/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Owner> updateOwner(@PathVariable int id, @RequestBody Owner owner)
 	{
-		Owner updatedOwner = petService.updateOwner(id, owner);
-		new ResponseEntity<Owner>(updatedOwner,HttpStatus.OK);
-		return ResponseEntity.ok(updatedOwner);
+		
+		Optional<Owner> oOwner = petService.getOwner(id);
+		if (oOwner.isPresent())
+		{
+			
+			Owner updatedOwner = petService.updateOwner(id, owner);
+			new ResponseEntity<Owner>(updatedOwner,HttpStatus.OK);
+			return ResponseEntity.ok(updatedOwner);
+		}
+		else
+		{
+		 
+			throw new OwnerNotFoundException("Owner not found");
+		}
+		
 	}
 	
 	@RequestMapping(value ="/owners/{id}", method = RequestMethod.DELETE)

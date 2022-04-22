@@ -12,7 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
+
 
 import com.tus.petstore.entity.Owner;
 import com.tus.petstore.entity.Pet;
@@ -24,7 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class IntegrationTest {
+ class IntegrationTest {
 
 	@LocalServerPort
 	private int port;
@@ -35,13 +35,13 @@ public class IntegrationTest {
 	String host = "http://localhost:";
 
 	@Test
-	public void greetingShouldReturnDefaultMessage() throws Exception {
+	 void greetingShouldReturnDefaultMessage() throws Exception {
 		assertThat(this.restTemplate.getForObject(host + port + "/",
 				String.class)).contains("Hello, World");
 	}
 	
 	@Test
-    public void testAddPetSuccess() throws URISyntaxException 
+    void testAddPetSuccess() throws URISyntaxException 
     {
         final String baseUrl = host+port+"/pets";
         URI uri = new URI(baseUrl);
@@ -60,9 +60,90 @@ public class IntegrationTest {
         //Verify request succeed
         assertEquals(201, result.getStatusCodeValue());
     }
+	@Test
+    void testGetPet() throws URISyntaxException 
+    {
+        final String addBaseUrl = host+port+"/pets";
+        URI addUri = new URI(addBaseUrl);
+    
+        Pet pet = new Pet();
+        pet.setName("Tom");
+        pet.setType("CAT");
+        
+        final String getBaseUrl = host+port+"/pets/Tom";
+        URI getUri = new URI(getBaseUrl);
+        
+         
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");      
+ 
+        HttpEntity<Pet> request = new HttpEntity<>(pet, headers);
+         
+        ResponseEntity<String> result = this.restTemplate.postForEntity(addUri, request, String.class);
+        
+        ResponseEntity<String> result1 = this.restTemplate.getForEntity(getUri,String.class);
+        
+        //Verify request succeed
+        assertEquals(200, result1.getStatusCodeValue());
+    }
 	
 	@Test
-    public void testAddOwnerSuccess() throws URISyntaxException 
+    void testGetOwner() throws URISyntaxException 
+    {
+        final String addBaseUrl = host+port+"/owners";
+        URI addUri = new URI(addBaseUrl);
+    
+        Owner owner = new Owner();
+        owner.setName("Sam");
+        owner.setContactNumber("0000");
+        
+        final String getBaseUrl = host+port+"/owners/Sam";
+        URI getUri = new URI(getBaseUrl);
+        
+         
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");      
+ 
+        HttpEntity<Owner> request = new HttpEntity<>(owner, headers);
+         
+        ResponseEntity<String> result = this.restTemplate.postForEntity(addUri, request, String.class);
+        
+        ResponseEntity<String> result1 = this.restTemplate.getForEntity(getUri,String.class);
+        
+        //Verify request succeed
+        assertEquals(200, result1.getStatusCodeValue());
+    }
+	
+	@Test
+    void testPetNotFound() throws URISyntaxException 
+    {
+        final String getBaseUrl = host+port+"/pets/Tom1";
+        URI getUri = new URI(getBaseUrl);  
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");      
+
+        ResponseEntity<String> result1 = this.restTemplate.getForEntity(getUri,String.class);
+        
+        //Verify Not Found 404
+        assertEquals(404, result1.getStatusCodeValue());
+    }
+	
+	@Test
+    void testOwnerNotFound() throws URISyntaxException 
+    {
+        final String getBaseUrl = host+port+"/owners/Sam1";
+        URI getUri = new URI(getBaseUrl);  
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-COM-PERSIST", "true");      
+
+        ResponseEntity<String> result1 = this.restTemplate.getForEntity(getUri,String.class);
+        
+        //Verify Not Found 404
+        assertEquals(404, result1.getStatusCodeValue());
+    }
+	
+	@Test
+     void testAddOwnerSuccess() throws URISyntaxException 
     {
         final String baseUrl = host+port+"/owners";
         URI uri = new URI(baseUrl);
@@ -86,7 +167,7 @@ public class IntegrationTest {
     }
 	
 	@Test
-    public void testAddPetMissingParamerets() throws URISyntaxException 
+     void testAddPetMissingParamerets() throws URISyntaxException 
     {
 		final String baseUrl = host+port+"/pets";
         URI uri = new URI(baseUrl);
