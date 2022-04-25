@@ -44,7 +44,7 @@ public class HomeController {
 	@RequestMapping(value = "/home" ,method = RequestMethod.GET)
 	public String welcome()
 	{
-		return "Welcome to Pet.";
+		return "Welcome to Pet Store Application";
 	}
 	
 
