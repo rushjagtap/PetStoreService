@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tus.petstore.entity.Pet;
@@ -45,7 +44,7 @@ public class HomeController {
 	@RequestMapping(value = "/home" ,method = RequestMethod.GET)
 	public String welcome()
 	{
-		return "Welcome to Pet Store Application";
+		return "Welcome to Pet";
 	}
 	
 
